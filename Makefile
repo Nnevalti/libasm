@@ -3,8 +3,13 @@ NAME	=	libasm.a
 CC		=	nasm
 
 SRCS	=	ft_write.s \
+			ft_read.s \
 			ft_strlen.s \
-			ft_strcpy.s
+			ft_strcpy.s \
+			ft_strcmp.s \
+			ft_strdup.s \
+			ft_list_size_bonus.s \
+			ft_list_push_front_bonus.s \
 
 OBJS	=	$(SRCS:.s=.o)
 
@@ -13,9 +18,11 @@ OBJS	=	$(SRCS:.s=.o)
 
 all		: $(NAME)
 
+re		:	fclean all
+
 $(NAME) :	$(OBJS)
 			ar rc $(NAME) $(OBJS)
-			gcc -o $(NAME) main.c -lasm -L .
+			gcc -o test main.c -lasm -L .
 
 clean	:
 			-rm $(OBJS)
