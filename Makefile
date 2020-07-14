@@ -2,6 +2,8 @@ NAME	=	libasm.a
 
 CC		=	nasm
 
+INC		=	libasm.h
+
 SRCS	=	ft_write.s \
 			ft_read.s \
 			ft_strlen.s \
@@ -22,10 +24,11 @@ re		:	fclean all
 
 $(NAME) :	$(OBJS)
 			ar rc $(NAME) $(OBJS)
-			gcc -o test main.c -lasm -L .
+			gcc -I $(INC) -o libasm main.c -lasm -L .
 
 clean	:
 			-rm $(OBJS)
 
 fclean	:	clean
 			-rm $(NAME)
+			-rm libasm
