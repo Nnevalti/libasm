@@ -12,26 +12,13 @@
 
 #include "libasm.h"
 
-void aff_list(t_list *list)
-{
-	while (list)
-	{
-		printf("%s -> ",list->data);
-		list = list->next;
-	}
-	printf("NULL\n");
-}
 int			main(void)
 {
-	char	*str;
 	int		res;
-	char	buf[32];
+	char	buf[33];
 	char	*dup;
 	int		fd;
-	t_list	*list;
-	t_list	*tmp;
 
-	list = NULL; // init t_list to NULL pointer
 	dup = "Megalovania";
 
 	printf("\033[1;33m");
@@ -45,9 +32,9 @@ int			main(void)
 	printf("\033[1;33m");
 	printf("/******FT_STRCPY******/\n");
 	printf("\033[0m");
-	printf("ft_strcpy : buf, \"test\"\n");
+	printf("ft_strcpy : \"test\" in buf\n");
 	printf("buf : %s\n", ft_strcpy(buf, "test"));
-	printf("strcpy : buf, \"test\"\n");
+	printf("strcpy : \"test\" in buf\n");
 	printf("buf : %s\n", strcpy(buf, "test"));
 
 	printf("\033[1;33m");
@@ -83,70 +70,65 @@ int			main(void)
 	printf("strcmp : \"\", \"\"\n");
 	printf("%d\n", strcmp("", ""));
 
+
+
 	printf("\033[1;33m");
 	printf("/******FT_WRITE******/\n");
 	printf("\033[0m");
+
 	printf("ft_write : Hello_world\\n\n");
 	res = ft_write(1, "Hello, World\n", 13);
 	printf("return value of ft_write : %d\n", res);
-	printf("\nTest error with wrong fd : \n");
+	printf("write : Hello_world\\n\n");
+	res = write(1, "Hello, World\n", 13);
+	printf("return value of ft_write : %d\n", res);
+	
+
+	printf("\nTest error with wrong fd : (ft_write)\n");
 	ft_write(42, "Hello, World\n", 13);
 	printf("%s\n", strerror(errno));
-	printf("\nTest error with NULL char : \n");
+	printf("\nTest error with wrong fd : (write)\n");
+	write(42, "Hello, World\n", 13);
+	printf("%s\n", strerror(errno));
+
+	
+	printf("\nTest error with NULL char : (ft_write)\n");
 	ft_write(1, NULL, 13);
 	printf("%s\n", strerror(errno));
+	printf("\nTest error with NULL char : (write)\n");
+	write(1, NULL, 13);
+	printf("%s\n", strerror(errno));
+
 
 	printf("\033[1;33m");
 	printf("/******FT_READ******/\n");
 	printf("\033[0m");
 	fd = open("ft_read.s", O_RDONLY);
-	res = ft_read(fd, buf, 16);
-	printf("%d : %s\n", res, buf);
+
+	res = ft_read(fd, buf, 32);
+	buf[32] = 0;
+	printf("ft_read res = %d :\n%s\n", res, buf);
+	res = read(fd, buf, 32);
+	buf[32] = 0;
+	printf("read res = %d :\n%s\n", res, buf);
 
 	printf("\nTest error with wrong fd : \n");
-	res = ft_read(42, buf, 16);
-	printf("%s\n", strerror(errno));
+	res = ft_read(42, buf, 32);
+	printf("ft_read : %s\nerrno : %d\n", strerror(errno), errno);
+	res = read(42, buf, 32);
+	printf("read : %s\nerrno : %d\n", strerror(errno), errno);
 
 	printf("\nTest error with NULL char : \n");
-	res = ft_read(fd, NULL, 16);
-	printf("%s\n", strerror(errno));
+	res = ft_read(fd, NULL, 32);
+	printf("ft_read :\n%s\n", strerror(errno));
+	res = read(fd, NULL, 32);
+	printf("read :\n%s\n", strerror(errno));
 
+	
 	printf("\033[1;33m");
 	printf("/******FT_STRDUP******/\n");
 	printf("\033[0m");
-	printf("dup : %s\n", dup);
-	printf("ft_strdup : %s\n", ft_strdup(dup));
+	printf("dup = %s\n", dup);
 	printf("strdup : %s\n", strdup(dup));
-
-	printf("\n");
-	printf("\033[1;36m");
-	printf("/******BONUS******/\n");
-	printf("\033[0m");
-
-	printf("\033[1;33m");
-	printf("/******FT_LIST_PUSH_FRONT******/\n");
-	printf("\033[0m");
-	printf("Called 1 : added : !\n");
-	ft_list_push_front(&list, "!");
-	printf("Called 2 : added : World\n");
-	ft_list_push_front(&list, "World");
-	printf("Called 3 : added : Heeeelloooo\n");
-	ft_list_push_front(&list, "Heeeelloooo");
-
-	printf("\033[1;33m");
-	printf("/******FT_LIST_SIZE******/\n");
-	printf("\033[0m");
-	res = ft_list_size(list);
-	printf("list length is %d\n", res);
-
-	printf("\033[1;33m");
-	printf("/******Display the list******/\n");
-	printf("\033[0m");	aff_list(list);
-	while (list)
-	{
-		tmp = list->next;
-		free(list);
-		list = tmp;
-	}
-	return (0);
+	printf("ft_strdup : %s\n", ft_strdup(dup));
 }
